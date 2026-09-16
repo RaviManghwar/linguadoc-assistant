@@ -125,129 +125,214 @@ def ask_question(message, vectorstore):
 
 
 # ══════════════════════════════════════════════════════════════
-#  THEME
+#  STYLING — one locked-in dark theme, no toggle, no light-mode edge cases
 # ══════════════════════════════════════════════════════════════
-if "theme" not in st.session_state:
-    st.session_state.theme = "dark"
-
-THEMES = {
-    "dark": {
-        "bg_grad": "radial-gradient(circle at 15% 0%, #241b3f 0%, #17122b 45%, #0b0a17 100%)",
-        "sidebar_grad": "linear-gradient(180deg, #14102a 0%, #0b0a17 100%)",
-        "glass": "rgba(255,255,255,0.045)",
-        "glass_border": "rgba(255,255,255,0.09)",
-        "glass_border_strong": "rgba(255,255,255,0.14)",
-        "text_main": "rgba(255,255,255,0.92)",
-        "text_dim": "rgba(255,255,255,0.55)",
-        "text_faint": "rgba(255,255,255,0.35)",
-        "sidebar_text": "rgba(255,255,255,0.85)",
-        "input_text": "#ffffff",
-        "scrollbar": "rgba(255,255,255,0.15)",
-        "assistant_bg": "linear-gradient(135deg, rgba(247,151,30,0.08), rgba(255,255,255,0.03))",
-        "assistant_border": "rgba(255,210,0,0.18)",
-        "user_bg": "rgba(255,255,255,0.03)",
-        "shadow": "0 8px 32px rgba(0,0,0,0.25)",
-        "toggle_icon": "🌙",
-    },
-    "light": {
-        "bg_grad": "radial-gradient(circle at 15% 0%, #fff8ec 0%, #fbf1e0 45%, #f6e9d3 100%)",
-        "sidebar_grad": "linear-gradient(180deg, #fffaf2 0%, #f8ecd8 100%)",
-        "glass": "rgba(255,255,255,0.55)",
-        "glass_border": "rgba(60,40,10,0.10)",
-        "glass_border_strong": "rgba(60,40,10,0.16)",
-        "text_main": "rgba(35,25,10,0.90)",
-        "text_dim": "rgba(35,25,10,0.55)",
-        "text_faint": "rgba(35,25,10,0.35)",
-        "sidebar_text": "rgba(35,25,10,0.85)",
-        "input_text": "#231a0a",
-        "scrollbar": "rgba(60,40,10,0.18)",
-        "assistant_bg": "linear-gradient(135deg, rgba(247,151,30,0.14), rgba(255,255,255,0.5))",
-        "assistant_border": "rgba(200,130,0,0.30)",
-        "user_bg": "rgba(255,255,255,0.6)",
-        "shadow": "0 8px 28px rgba(120,90,40,0.12)",
-        "toggle_icon": "☀️",
-    },
-}
-T = THEMES[st.session_state.theme]
-
-# ══════════════════════════════════════════════════════════════
-#  STYLING
-# ══════════════════════════════════════════════════════════════
-st.markdown(f"""
+st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
 
-:root {{
+:root {
     --accent-1: #f7971e;
     --accent-2: #ffd200;
-    --glass: {T["glass"]};
-    --glass-border: {T["glass_border"]};
-}}
+    --glass: rgba(255,255,255,0.05);
+    --glass-hover: rgba(255,255,255,0.08);
+    --glass-border: rgba(255,255,255,0.10);
+    --glass-border-strong: rgba(255,255,255,0.16);
+    --text-main: rgba(255,255,255,0.94);
+    --text-dim: rgba(255,255,255,0.58);
+    --text-faint: rgba(255,255,255,0.36);
+}
 
-.stApp {{
-    background: {T["bg_grad"]} !important;
+.stApp {
+    background: radial-gradient(circle at 15% 0%, #241b3f 0%, #17122b 45%, #0b0a17 100%) !important;
     font-family: 'DM Sans', sans-serif !important;
-    color-scheme: {st.session_state.theme};
-}}
+    color-scheme: dark;
+}
 
-/* Safety net: any Streamlit text we haven't specifically styled still
-   follows the active theme instead of defaulting to dark-mode colors. */
 .stApp, .stApp p, .stApp li, .stApp span, .stApp label,
 .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5,
-.stMarkdown, .stCaption, [data-testid="stMarkdownContainer"] {{
-    color: {T["text_main"]};
-}}
-[data-testid="stAlert"] {{
-    background: var(--glass) !important;
-    border: 1px solid var(--glass-border) !important;
-}}
-[data-testid="stAlert"] p {{
-    color: {T["text_main"]} !important;
-}}
+.stMarkdown, .stCaption, [data-testid="stMarkdownContainer"] {
+    color: var(--text-main);
+}
 
-#MainMenu {{visibility: hidden;}}
-footer {{visibility: hidden;}}
-header[data-testid="stHeader"] {{
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header[data-testid="stHeader"] {
     background: transparent !important;
     box-shadow: none !important;
-}}
-[data-testid="collapsedControl"] {{
+}
+[data-testid="collapsedControl"] {
     color: var(--accent-1) !important;
-    visibility: visible !important;
-    display: flex !important;
-}}
-[data-testid="collapsedControl"] svg {{
+}
+[data-testid="collapsedControl"] svg {
     fill: var(--accent-1) !important;
-}}
+}
 
-/* ---- Sidebar ---- */
-section[data-testid="stSidebar"] {{
-    background: {T["sidebar_grad"]} !important;
+[data-testid="stAlert"] {
+    background: var(--glass) !important;
+    border: 1px solid var(--glass-border) !important;
+}
+[data-testid="stAlert"] p {
+    color: var(--text-main) !important;
+}
+
+/* ══════════════════ SIDEBAR ══════════════════ */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #16112b 0%, #0c0a18 100%) !important;
     border-right: 1px solid var(--glass-border);
-}}
-section[data-testid="stSidebar"] * {{ color: {T["sidebar_text"]} !important; }}
-.sb-card {{
+}
+section[data-testid="stSidebar"] * { color: var(--text-main) !important; }
+
+.sb-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.4rem 0 1.4rem 0;
+    border-bottom: 1px solid var(--glass-border);
+    margin-bottom: 1.2rem;
+}
+.sb-brand .icon {
+    font-size: 1.7rem;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(247,151,30,0.18), rgba(255,210,0,0.10));
+    border: 1px solid rgba(255,210,0,0.25);
+    border-radius: 12px;
+}
+.sb-brand .title {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--text-main);
+    line-height: 1.1;
+}
+.sb-brand .subtitle {
+    font-size: 0.72rem;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+}
+
+.sb-section-label {
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-faint) !important;
+    margin: 1.1rem 0 0.5rem 0.1rem;
+    font-weight: 600;
+}
+
+.sb-card {
     background: var(--glass);
     border: 1px solid var(--glass-border);
     border-radius: 14px;
-    padding: 0.9rem 1rem;
-    margin-bottom: 0.8rem;
-}}
-.sb-card .label {{
-    font-size: 0.7rem;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    transition: all 0.2s ease;
+}
+.sb-card:hover {
+    border-color: var(--glass-border-strong);
+    background: var(--glass-hover);
+}
+.sb-card .emoji {
+    font-size: 1.15rem;
+    width: 32px;
+    text-align: center;
+    flex-shrink: 0;
+}
+.sb-card .text-wrap { min-width: 0; }
+.sb-card .label {
+    font-size: 0.66rem;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: {T["text_dim"]} !important;
-    margin-bottom: 0.25rem;
-}}
-.sb-card .value {{
+    letter-spacing: 0.07em;
+    color: var(--text-faint) !important;
+    margin-bottom: 0.15rem;
+}
+.sb-card .value {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.92rem;
-    color: var(--accent-1) !important;
-}}
+    font-size: 0.88rem;
+    color: var(--accent-2) !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
-/* ---- Hero header ---- */
-.hero-header {{
+.sb-stats-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+}
+.sb-stat {
+    flex: 1;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 0.7rem 0.5rem;
+    text-align: center;
+}
+.sb-stat .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--accent-2) !important;
+    display: block;
+}
+.sb-stat .lbl {
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-faint) !important;
+}
+
+/* ══════════════════ BUTTONS ══════════════════ */
+.stApp button {
+    font-family: 'DM Sans', sans-serif !important;
+}
+.stApp button[kind="secondary"],
+.stApp [data-testid*="BaseButton" i] {
+    background: var(--glass) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-main) !important;
+    transition: all 0.2s ease !important;
+}
+.stApp button[kind="secondary"]:hover,
+.stApp [data-testid*="BaseButton" i]:hover {
+    border-color: var(--accent-1) !important;
+    color: var(--accent-1) !important;
+    background: rgba(247,151,30,0.10) !important;
+}
+section[data-testid="stSidebar"] button {
+    border-radius: 10px !important;
+}
+
+/* Example question chips */
+div[data-testid*="Horizontal" i] button,
+div[data-testid*="column" i] button {
+    background: var(--glass) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-main) !important;
+    border-radius: 999px !important;
+    padding: 0.5rem 1rem !important;
+    font-size: 0.83rem !important;
+    font-weight: 400 !important;
+    white-space: normal !important;
+    height: 100% !important;
+}
+div[data-testid*="Horizontal" i] button:hover,
+div[data-testid*="column" i] button:hover {
+    border-color: var(--accent-1) !important;
+    color: var(--accent-1) !important;
+    background: rgba(247,151,30,0.10) !important;
+    transform: translateY(-1px);
+}
+
+/* ══════════════════ HERO HEADER ══════════════════ */
+.hero-header {
     text-align: center;
     padding: 2.6rem 2rem 1.8rem;
     background: var(--glass);
@@ -255,9 +340,9 @@ section[data-testid="stSidebar"] * {{ color: {T["sidebar_text"]} !important; }}
     border-radius: 22px;
     margin-bottom: 1.6rem;
     backdrop-filter: blur(14px);
-    box-shadow: {T["shadow"]};
-}}
-.hero-header h1 {{
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+}
+.hero-header h1 {
     font-family: 'Fraunces', serif !important;
     font-size: 2.6rem !important;
     font-weight: 700 !important;
@@ -267,160 +352,108 @@ section[data-testid="stSidebar"] * {{ color: {T["sidebar_text"]} !important; }}
     background-clip: text;
     margin: 0 0 0.5rem 0 !important;
     line-height: 1.15 !important;
-}}
-.hero-header p {{
-    color: {T["text_dim"]} !important;
+}
+.hero-header p {
+    color: var(--text-dim) !important;
     font-size: 1.02rem !important;
     font-weight: 300 !important;
     margin: 0 !important;
-}}
+}
 
-/* ---- Buttons (universal fallback for any Streamlit button testid) ---- */
-.stApp button {{
-    font-family: 'DM Sans', sans-serif !important;
-}}
-.stApp button[kind="secondary"],
-.stApp [data-testid*="BaseButton" i] {{
-    background: var(--glass) !important;
-    border: 1px solid var(--glass-border) !important;
-    color: {T["text_main"]} !important;
-    transition: all 0.2s ease !important;
-}}
-.stApp button[kind="secondary"]:hover,
-.stApp [data-testid*="BaseButton" i]:hover {{
-    border-color: var(--accent-1) !important;
-    color: var(--accent-1) !important;
-    background: rgba(247,151,30,0.10) !important;
-}}
-
-/* ---- Sidebar buttons (theme toggle, clear conversation) ---- */
-section[data-testid="stSidebar"] button {{
-    background: var(--glass) !important;
-    border: 1px solid var(--glass-border) !important;
-    color: {T["sidebar_text"]} !important;
-    border-radius: 10px !important;
-}}
-section[data-testid="stSidebar"] button:hover {{
-    border-color: var(--accent-1) !important;
-    color: var(--accent-1) !important;
-}}
-
-/* ---- Example question chips ---- */
-div[data-testid*="Horizontal" i] button,
-div[data-testid*="column" i] button {{
-    background: var(--glass) !important;
-    border: 1px solid var(--glass-border) !important;
-    color: {T["text_main"]} !important;
-    border-radius: 999px !important;
-    padding: 0.5rem 1rem !important;
-    font-size: 0.83rem !important;
-    font-weight: 400 !important;
-    white-space: normal !important;
-    height: 100% !important;
-}}
-div[data-testid*="Horizontal" i] button:hover,
-div[data-testid*="column" i] button:hover {{
-    border-color: var(--accent-1) !important;
-    color: var(--accent-1) !important;
-    background: rgba(247,151,30,0.10) !important;
-    transform: translateY(-1px);
-}}
-
-/* ---- Chat messages ---- */
-div[data-testid="stChatMessage"] {{
+/* ══════════════════ CHAT MESSAGES ══════════════════ */
+div[data-testid="stChatMessage"] {
     background: var(--glass);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
     padding: 0.5rem 0.9rem;
     margin-bottom: 0.85rem;
     animation: fadeIn 0.25s ease;
-}}
-div[data-testid="stChatMessageContent"] p {{
-    color: {T["text_main"]} !important;
+}
+div[data-testid="stChatMessageContent"] p {
+    color: var(--text-main) !important;
     font-size: 0.96rem;
     line-height: 1.6;
-}}
-@keyframes fadeIn {{
-    from {{ opacity: 0; transform: translateY(4px); }}
-    to {{ opacity: 1; transform: translateY(0); }}
-}}
-div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {{
-    background: {T["assistant_bg"]};
-    border-color: {T["assistant_border"]};
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+    background: linear-gradient(135deg, rgba(247,151,30,0.08), rgba(255,255,255,0.03));
+    border-color: rgba(255,210,0,0.18);
     margin-right: 10%;
-}}
-div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {{
-    background: {T["user_bg"]};
-    border-color: {T["glass_border_strong"]};
+}
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+    background: rgba(255,255,255,0.03);
+    border-color: var(--glass-border-strong);
     margin-left: 10%;
-}}
+}
 [data-testid="stChatMessageAvatarUser"],
-[data-testid="stChatMessageAvatarAssistant"] {{
+[data-testid="stChatMessageAvatarAssistant"] {
     background: var(--glass) !important;
     border: 1px solid var(--glass-border) !important;
-}}
+}
 
-/* ---- Source citation caption ---- */
-.source-tag {{
+.source-tag {
     display: inline-block;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
-    color: {T["text_faint"]};
+    color: var(--text-faint);
     background: var(--glass);
     border: 1px solid var(--glass-border);
     border-radius: 999px;
     padding: 0.15rem 0.7rem;
     margin-top: 0.4rem;
-}}
+}
 
-/* ---- Chat input box ---- */
-[data-testid*="ChatInput" i] {{
+/* ══════════════════ CHAT INPUT ══════════════════ */
+[data-testid*="ChatInput" i] {
     background: var(--glass) !important;
     border: 1px solid var(--glass-border) !important;
     border-radius: 16px !important;
     box-shadow: none !important;
-}}
-[data-testid*="ChatInput" i]:focus-within {{
+}
+[data-testid*="ChatInput" i]:focus-within {
     border-color: rgba(247,151,30,0.5) !important;
     box-shadow: 0 0 0 3px rgba(247,151,30,0.12) !important;
-}}
-[data-testid*="ChatInput" i] textarea {{
-    color: {T["input_text"]} !important;
+}
+[data-testid*="ChatInput" i] textarea {
+    color: #ffffff !important;
     background: transparent !important;
     font-family: 'DM Sans', sans-serif !important;
     box-shadow: none !important;
     outline: none !important;
-}}
-[data-testid*="ChatInput" i] textarea::placeholder {{
-    color: {T["text_faint"]} !important;
-}}
-[data-testid*="ChatInput" i] textarea:focus {{
+}
+[data-testid*="ChatInput" i] textarea::placeholder {
+    color: var(--text-faint) !important;
+}
+[data-testid*="ChatInput" i] textarea:focus {
     box-shadow: none !important;
     outline: none !important;
-}}
-[data-testid*="ChatInput" i] button {{
+}
+[data-testid*="ChatInput" i] button {
     background: linear-gradient(135deg, var(--accent-1), var(--accent-2)) !important;
     border: none !important;
-}}
-[data-testid*="ChatInput" i] button svg {{
+}
+[data-testid*="ChatInput" i] button svg {
     fill: #1a1a2e !important;
-}}
+}
 
-/* ---- Footer ---- */
-.footer-note {{
+/* ══════════════════ FOOTER ══════════════════ */
+.footer-note {
     text-align: center;
-    color: {T["text_faint"]};
+    color: var(--text-faint);
     font-size: 0.76rem;
     margin-top: 1.4rem;
     letter-spacing: 0.05em;
     font-family: 'JetBrains Mono', monospace;
-}}
+}
 
-/* ---- Scrollbar ---- */
-::-webkit-scrollbar {{ width: 8px; }}
-::-webkit-scrollbar-track {{ background: transparent; }}
-::-webkit-scrollbar-thumb {{ background: {T["scrollbar"]}; border-radius: 8px; }}
-::-webkit-scrollbar-thumb:hover {{ background: var(--accent-1); }}
+/* ══════════════════ SCROLLBAR ══════════════════ */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 8px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-1); }
 </style>
 """, unsafe_allow_html=True)
 
@@ -433,36 +466,64 @@ vectorstore, total_pages, total_chunks = build_vectorstore()
 #  SIDEBAR
 # ══════════════════════════════════════════════════════════════
 with st.sidebar:
-    top_l, top_r = st.columns([3, 1])
-    with top_l:
-        st.markdown("### 📚 LinguaDoc")
-    with top_r:
-        if st.button(T["toggle_icon"], key="theme_toggle", help="Switch theme"):
-            st.session_state.theme = "light" if st.session_state.theme == "dark" else "dark"
-            st.rerun()
+    st.markdown("""
+    <div class="sb-brand">
+        <div class="icon">📚</div>
+        <div>
+            <div class="title">LinguaDoc</div>
+            <div class="subtitle">Document Q&A Assistant</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
+    st.markdown('<div class="sb-section-label">Knowledge base</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="sb-card"><div class="label">Document</div>'
-        '<div class="value">Python for Linguists</div></div>',
+        '<div class="sb-card"><div class="emoji">📄</div>'
+        '<div class="text-wrap"><div class="label">Document</div>'
+        '<div class="value">Python for Linguists</div></div></div>',
         unsafe_allow_html=True,
     )
     st.markdown(
-        '<div class="sb-card"><div class="label">Model</div>'
-        '<div class="value">LLaMA 3.3 · 70B</div></div>',
+        f"""
+        <div class="sb-stats-row">
+            <div class="sb-stat"><span class="num">{total_pages}</span><span class="lbl">Pages</span></div>
+            <div class="sb-stat"><span class="num">{total_chunks}</span><span class="lbl">Chunks</span></div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    st.markdown('<div class="sb-section-label">Engine</div>', unsafe_allow_html=True)
+    st.markdown(
+        '<div class="sb-card"><div class="emoji">🧠</div>'
+        '<div class="text-wrap"><div class="label">Model</div>'
+        '<div class="value">LLaMA 3.3 · 70B</div></div></div>',
         unsafe_allow_html=True,
     )
     st.markdown(
-        '<div class="sb-card"><div class="label">Vector DB</div>'
-        '<div class="value">FAISS</div></div>',
+        '<div class="sb-card"><div class="emoji">⚡</div>'
+        '<div class="text-wrap"><div class="label">Vector DB</div>'
+        '<div class="value">FAISS</div></div></div>',
         unsafe_allow_html=True,
     )
     st.markdown(
-        f'<div class="sb-card"><div class="label">Indexed</div>'
-        f'<div class="value">{total_pages} pages · {total_chunks} chunks</div></div>',
+        '<div class="sb-card"><div class="emoji">🔗</div>'
+        '<div class="text-wrap"><div class="label">Powered by</div>'
+        '<div class="value">Groq API</div></div></div>',
         unsafe_allow_html=True,
     )
+
+    st.markdown('<div class="sb-section-label">Session</div>', unsafe_allow_html=True)
+    n_questions = len([m for m in st.session_state.get("messages", []) if m["role"] == "user"])
+    st.markdown(
+        f'<div class="sb-card"><div class="emoji">💬</div>'
+        f'<div class="text-wrap"><div class="label">Questions asked</div>'
+        f'<div class="value">{n_questions}</div></div></div>',
+        unsafe_allow_html=True,
+    )
+
     st.divider()
-    if st.button("🗑️ Clear conversation", use_container_width=True):
+    if st.button("🗑️  Clear conversation", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
 
@@ -497,7 +558,7 @@ def render_message(role, content, pages=None):
 # ══════════════════════════════════════════════════════════════
 if not st.session_state.messages:
     st.markdown(
-        f'<p style="color:{T["text_faint"]}; font-size:0.85rem; '
+        '<p style="color:var(--text-faint); font-size:0.85rem; '
         'text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.6rem;">'
         'Try asking</p>',
         unsafe_allow_html=True,
