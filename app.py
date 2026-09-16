@@ -455,6 +455,16 @@ div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
     box-shadow: 0 6px 24px rgba(0,0,0,0.35) !important;
     padding: 0.15rem 0.3rem !important;
 }
+/* Strip every nested wrapper's own border/background/radius so only
+   the single outer border above is visible — Streamlit nests an
+   inner pill-shaped div around the textarea that otherwise shows
+   through as a second, ugly border. */
+[data-testid*="ChatInput" i] * {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+}
 [data-testid*="ChatInput" i]:focus-within {
     background: linear-gradient(#241d40, #241d40) padding-box,
                 linear-gradient(135deg, var(--accent-1), var(--accent-2)) border-box !important;
@@ -465,19 +475,14 @@ div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
     background: transparent !important;
     font-family: 'DM Sans', sans-serif !important;
     font-size: 0.95rem !important;
-    box-shadow: none !important;
-    outline: none !important;
 }
 [data-testid*="ChatInput" i] textarea::placeholder {
     color: rgba(255,255,255,0.4) !important;
 }
-[data-testid*="ChatInput" i] textarea:focus {
-    box-shadow: none !important;
-    outline: none !important;
-}
+/* Re-apply the send button's own look on top of the blanket reset above */
 [data-testid*="ChatInput" i] button {
     background: linear-gradient(135deg, var(--accent-1), var(--accent-2)) !important;
-    border: none !important;
+    border-radius: 50% !important;
 }
 [data-testid*="ChatInput" i] button svg {
     fill: #1a1a2e !important;
