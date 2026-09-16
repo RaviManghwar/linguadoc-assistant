@@ -220,16 +220,49 @@ section[data-testid="stSidebar"] * { color: var(--text-main) !important; }
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--text-faint) !important;
-    margin: 1.1rem 0 0.5rem 0.1rem;
+    margin: 0.85rem 0 0.4rem 0.1rem;
     font-weight: 600;
+}
+
+.sb-list {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 0 0.9rem;
+    margin-bottom: 0.5rem;
+}
+.sb-list-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--glass-border);
+    gap: 0.6rem;
+}
+.sb-list-row:last-child { border-bottom: none; }
+.sb-list-row .label {
+    font-size: 0.72rem;
+    color: var(--text-dim) !important;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+}
+.sb-list-row .value {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-2) !important;
+    text-align: right;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .sb-card {
     background: var(--glass);
     border: 1px solid var(--glass-border);
     border-radius: 14px;
-    padding: 0.85rem 1rem;
-    margin-bottom: 0.6rem;
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
     gap: 0.7rem;
@@ -265,14 +298,14 @@ section[data-testid="stSidebar"] * { color: var(--text-main) !important; }
 .sb-stats-row {
     display: flex;
     gap: 0.5rem;
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5rem;
 }
 .sb-stat {
     flex: 1;
     background: var(--glass);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
-    padding: 0.7rem 0.5rem;
+    padding: 0.55rem 0.5rem;
     text-align: center;
 }
 .sb-stat .num {
@@ -495,30 +528,23 @@ with st.sidebar:
 
     st.markdown('<div class="sb-section-label">Engine</div>', unsafe_allow_html=True)
     st.markdown(
-        '<div class="sb-card"><div class="emoji">🧠</div>'
-        '<div class="text-wrap"><div class="label">Model</div>'
-        '<div class="value">LLaMA 3.3 · 70B</div></div></div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        '<div class="sb-card"><div class="emoji">⚡</div>'
-        '<div class="text-wrap"><div class="label">Vector DB</div>'
-        '<div class="value">FAISS</div></div></div>',
-        unsafe_allow_html=True,
-    )
-    st.markdown(
-        '<div class="sb-card"><div class="emoji">🔗</div>'
-        '<div class="text-wrap"><div class="label">Powered by</div>'
-        '<div class="value">Groq API</div></div></div>',
+        """
+        <div class="sb-list">
+            <div class="sb-list-row"><span class="label">🧠 Model</span><span class="value">LLaMA 3.3 · 70B</span></div>
+            <div class="sb-list-row"><span class="label">⚡ Vector DB</span><span class="value">FAISS</span></div>
+            <div class="sb-list-row"><span class="label">🔗 Powered by</span><span class="value">Groq API</span></div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
-    st.markdown('<div class="sb-section-label">Session</div>', unsafe_allow_html=True)
     n_questions = len([m for m in st.session_state.get("messages", []) if m["role"] == "user"])
     st.markdown(
-        f'<div class="sb-card"><div class="emoji">💬</div>'
-        f'<div class="text-wrap"><div class="label">Questions asked</div>'
-        f'<div class="value">{n_questions}</div></div></div>',
+        f"""
+        <div class="sb-list">
+            <div class="sb-list-row"><span class="label">💬 Questions asked</span><span class="value">{n_questions}</span></div>
+        </div>
+        """,
         unsafe_allow_html=True,
     )
 
