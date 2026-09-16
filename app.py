@@ -189,7 +189,20 @@ st.markdown(f"""
     font-family: 'DM Sans', sans-serif !important;
 }}
 
-#MainMenu, footer, header {{visibility: hidden;}}
+#MainMenu {{visibility: hidden;}}
+footer {{visibility: hidden;}}
+header[data-testid="stHeader"] {{
+    background: transparent !important;
+    box-shadow: none !important;
+}}
+[data-testid="collapsedControl"] {{
+    color: var(--accent-1) !important;
+    visibility: visible !important;
+    display: flex !important;
+}}
+[data-testid="collapsedControl"] svg {{
+    fill: var(--accent-1) !important;
+}}
 
 /* ---- Sidebar ---- */
 section[data-testid="stSidebar"] {{
