@@ -187,6 +187,22 @@ st.markdown(f"""
 .stApp {{
     background: {T["bg_grad"]} !important;
     font-family: 'DM Sans', sans-serif !important;
+    color-scheme: {st.session_state.theme};
+}}
+
+/* Safety net: any Streamlit text we haven't specifically styled still
+   follows the active theme instead of defaulting to dark-mode colors. */
+.stApp, .stApp p, .stApp li, .stApp span, .stApp label,
+.stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp h5,
+.stMarkdown, .stCaption, [data-testid="stMarkdownContainer"] {{
+    color: {T["text_main"]};
+}}
+[data-testid="stAlert"] {{
+    background: var(--glass) !important;
+    border: 1px solid var(--glass-border) !important;
+}}
+[data-testid="stAlert"] p {{
+    color: {T["text_main"]} !important;
 }}
 
 #MainMenu {{visibility: hidden;}}
