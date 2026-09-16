@@ -246,8 +246,39 @@ section[data-testid="stSidebar"] * {{ color: {T["sidebar_text"]} !important; }}
     margin: 0 !important;
 }}
 
+/* ---- Buttons (universal fallback for any Streamlit button testid) ---- */
+.stApp button {{
+    font-family: 'DM Sans', sans-serif !important;
+}}
+.stApp button[kind="secondary"],
+.stApp [data-testid*="BaseButton" i] {{
+    background: var(--glass) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: {T["text_main"]} !important;
+    transition: all 0.2s ease !important;
+}}
+.stApp button[kind="secondary"]:hover,
+.stApp [data-testid*="BaseButton" i]:hover {{
+    border-color: var(--accent-1) !important;
+    color: var(--accent-1) !important;
+    background: rgba(247,151,30,0.10) !important;
+}}
+
+/* ---- Sidebar buttons (theme toggle, clear conversation) ---- */
+section[data-testid="stSidebar"] button {{
+    background: var(--glass) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: {T["sidebar_text"]} !important;
+    border-radius: 10px !important;
+}}
+section[data-testid="stSidebar"] button:hover {{
+    border-color: var(--accent-1) !important;
+    color: var(--accent-1) !important;
+}}
+
 /* ---- Example question chips ---- */
-div[data-testid="column"] .stButton button {{
+div[data-testid*="Horizontal" i] button,
+div[data-testid*="column" i] button {{
     background: var(--glass) !important;
     border: 1px solid var(--glass-border) !important;
     color: {T["text_main"]} !important;
@@ -255,11 +286,11 @@ div[data-testid="column"] .stButton button {{
     padding: 0.5rem 1rem !important;
     font-size: 0.83rem !important;
     font-weight: 400 !important;
-    transition: all 0.2s ease !important;
     white-space: normal !important;
     height: 100% !important;
 }}
-div[data-testid="column"] .stButton button:hover {{
+div[data-testid*="Horizontal" i] button:hover,
+div[data-testid*="column" i] button:hover {{
     border-color: var(--accent-1) !important;
     color: var(--accent-1) !important;
     background: rgba(247,151,30,0.10) !important;
@@ -314,31 +345,35 @@ div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {{
 }}
 
 /* ---- Chat input box ---- */
-div[data-testid="stChatInput"] {{
+[data-testid*="ChatInput" i] {{
     background: var(--glass) !important;
     border: 1px solid var(--glass-border) !important;
     border-radius: 16px !important;
     box-shadow: none !important;
 }}
-div[data-testid="stChatInput"]:focus-within {{
+[data-testid*="ChatInput" i]:focus-within {{
     border-color: rgba(247,151,30,0.5) !important;
     box-shadow: 0 0 0 3px rgba(247,151,30,0.12) !important;
 }}
-div[data-testid="stChatInput"] textarea {{
+[data-testid*="ChatInput" i] textarea {{
     color: {T["input_text"]} !important;
+    background: transparent !important;
     font-family: 'DM Sans', sans-serif !important;
     box-shadow: none !important;
     outline: none !important;
 }}
-div[data-testid="stChatInput"] textarea:focus {{
+[data-testid*="ChatInput" i] textarea::placeholder {{
+    color: {T["text_faint"]} !important;
+}}
+[data-testid*="ChatInput" i] textarea:focus {{
     box-shadow: none !important;
     outline: none !important;
 }}
-div[data-testid="stChatInput"] button {{
+[data-testid*="ChatInput" i] button {{
     background: linear-gradient(135deg, var(--accent-1), var(--accent-2)) !important;
     border: none !important;
 }}
-div[data-testid="stChatInput"] button svg {{
+[data-testid*="ChatInput" i] button svg {{
     fill: #1a1a2e !important;
 }}
 
