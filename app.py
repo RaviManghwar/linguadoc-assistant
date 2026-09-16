@@ -1,3 +1,4 @@
+
 import os
 import requests
 import streamlit as st
@@ -224,13 +225,37 @@ div[data-testid="stChatMessage"] {
     background: var(--glass);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
-    padding: 0.3rem 0.6rem;
-    margin-bottom: 0.7rem;
+    padding: 0.5rem 0.9rem;
+    margin-bottom: 0.85rem;
+    animation: fadeIn 0.25s ease;
 }
 div[data-testid="stChatMessageContent"] p {
     color: rgba(255,255,255,0.92) !important;
     font-size: 0.96rem;
-    line-height: 1.55;
+    line-height: 1.6;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* Assistant messages: subtle gold-tinted glass */
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+    background: linear-gradient(135deg, rgba(247,151,30,0.08), rgba(255,255,255,0.03));
+    border-color: rgba(255,210,0,0.18);
+}
+/* User messages: cooler, slightly muted glass, pulled in from the right */
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+    background: rgba(255,255,255,0.03);
+    border-color: rgba(255,255,255,0.14);
+    margin-left: 10%;
+}
+div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+    margin-right: 10%;
+}
+[data-testid="stChatMessageAvatarUser"],
+[data-testid="stChatMessageAvatarAssistant"] {
+    background: rgba(255,255,255,0.06) !important;
+    border: 1px solid var(--glass-border) !important;
 }
 
 /* ---- Chat input box ---- */
@@ -238,10 +263,28 @@ div[data-testid="stChatInput"] {
     background: var(--glass) !important;
     border: 1px solid var(--glass-border) !important;
     border-radius: 16px !important;
+    box-shadow: none !important;
+}
+div[data-testid="stChatInput"]:focus-within {
+    border-color: rgba(255,210,0,0.45) !important;
+    box-shadow: 0 0 0 3px rgba(255,210,0,0.12) !important;
 }
 div[data-testid="stChatInput"] textarea {
     color: white !important;
     font-family: 'DM Sans', sans-serif !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+div[data-testid="stChatInput"] textarea:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+div[data-testid="stChatInput"] button {
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2)) !important;
+    border: none !important;
+}
+div[data-testid="stChatInput"] button svg {
+    fill: #1a1a2e !important;
 }
 
 /* ---- Footer ---- */
