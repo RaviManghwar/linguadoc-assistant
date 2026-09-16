@@ -439,26 +439,37 @@ div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
     margin-top: 0.4rem;
 }
 
+/* Streamlit wraps the chat input in its own bottom container —
+   theme that too, or it shows as a flat black bar regardless of
+   how the input box itself is styled. */
+[data-testid*="Bottom" i] {
+    background: linear-gradient(180deg, rgba(11,10,23,0) 0%, rgba(11,10,23,0.92) 55%, #0b0a17 100%) !important;
+}
+
 /* ══════════════════ CHAT INPUT ══════════════════ */
 [data-testid*="ChatInput" i] {
-    background: var(--glass) !important;
-    border: 1px solid var(--glass-border) !important;
-    border-radius: 16px !important;
-    box-shadow: none !important;
+    background: linear-gradient(#211a3a, #211a3a) padding-box,
+                linear-gradient(135deg, rgba(247,151,30,0.55), rgba(255,210,0,0.35)) border-box !important;
+    border: 1.5px solid transparent !important;
+    border-radius: 18px !important;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.35) !important;
+    padding: 0.15rem 0.3rem !important;
 }
 [data-testid*="ChatInput" i]:focus-within {
-    border-color: rgba(247,151,30,0.5) !important;
-    box-shadow: 0 0 0 3px rgba(247,151,30,0.12) !important;
+    background: linear-gradient(#241d40, #241d40) padding-box,
+                linear-gradient(135deg, var(--accent-1), var(--accent-2)) border-box !important;
+    box-shadow: 0 6px 28px rgba(0,0,0,0.4), 0 0 0 3px rgba(247,151,30,0.15) !important;
 }
 [data-testid*="ChatInput" i] textarea {
     color: #ffffff !important;
     background: transparent !important;
     font-family: 'DM Sans', sans-serif !important;
+    font-size: 0.95rem !important;
     box-shadow: none !important;
     outline: none !important;
 }
 [data-testid*="ChatInput" i] textarea::placeholder {
-    color: var(--text-faint) !important;
+    color: rgba(255,255,255,0.4) !important;
 }
 [data-testid*="ChatInput" i] textarea:focus {
     box-shadow: none !important;
