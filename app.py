@@ -503,6 +503,61 @@ div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 8px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent-1); }
+
+/* ══════════════════ RESPONSIVE (tablet) ══════════════════ */
+@media (max-width: 992px) {
+    .hero-header { padding: 2.1rem 1.4rem 1.5rem; }
+    .hero-header h1 { font-size: 2.1rem !important; }
+    div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) { margin-right: 4%; }
+    div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) { margin-left: 4%; }
+}
+
+/* ══════════════════ RESPONSIVE (phone) ══════════════════ */
+@media (max-width: 640px) {
+    .hero-header {
+        padding: 1.5rem 1rem 1.2rem;
+        border-radius: 16px;
+        margin-bottom: 1.1rem;
+    }
+    .hero-header h1 {
+        font-size: 1.5rem !important;
+        line-height: 1.25 !important;
+    }
+    .hero-header p { font-size: 0.82rem !important; }
+
+    /* Chat bubbles: drop the indent, there's no room to spare */
+    div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]),
+    div[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    div[data-testid="stChatMessageContent"] p {
+        font-size: 0.9rem !important;
+    }
+
+    /* Example chips: smaller and tighter so 5 still fit reasonably when stacked */
+    div[data-testid*="Horizontal" i] button,
+    div[data-testid*="column" i] button {
+        font-size: 0.78rem !important;
+        padding: 0.5rem 0.7rem !important;
+    }
+
+    /* Sidebar cards: tighten padding for narrow screens */
+    .sb-card { padding: 0.6rem 0.75rem; }
+    .sb-list { padding: 0 0.7rem; }
+    .sb-stat { padding: 0.5rem 0.4rem; }
+    .sb-stat .num { font-size: 1rem; }
+
+    /* Chat input: slightly smaller radius/padding to match tighter layout */
+    [data-testid*="ChatInput" i] {
+        border-radius: 14px !important;
+    }
+    [data-testid*="ChatInput" i] textarea {
+        font-size: 0.9rem !important;
+    }
+
+    .footer-note { font-size: 0.68rem; }
+}
 </style>
 """, unsafe_allow_html=True)
 
